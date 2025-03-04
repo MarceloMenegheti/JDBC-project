@@ -2,7 +2,9 @@ package jdbc.application;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 
 import db.Db;
@@ -13,19 +15,31 @@ public class Program {
 		
 		Connection conn = null;
 		PreparedStatement st = null;
+		ResultSet rs = null;
 		try {
-			conn = Db.getConnection();
-			st = conn.prepareStatement(
-					"UPDATE seller "
-					+ "SET BaseSalary = BaseSalary + ? "
-					+ "WHERE "
-					+ "(DepartmentId = ?) ");
-		
-			st.setDouble(1, 200.0);
-			st.setInt(2, 2);
 			
-			int rowsAffected = st.executeUpdate();
-			System.out.println("Feito! linhas alteradas: " + rowsAffected);
+			conn = Db.getConnection();
+			// EXAMPLE 2:
+						st = conn.prepareStatement(
+								"insert into department (Name) values ('D1'),('D2')", 
+								Statement.RETURN_GENERATED_KEYS);
+
+						int rowsAffected = st.executeUpdate();
+
+						if (rowsAffected > 0) {
+							rs = st.getGeneratedKeys();
+							while (rs.next()) {
+								int id = rs.getInt(1);
+								System.out.println("Done! Id: " + id);
+							}
+						}
+						else {
+							System.out.println("No rows affected!");
+						}
+		
+		
+		
+		
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
