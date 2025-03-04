@@ -28,10 +28,10 @@ public class Program {
 			int rows1 = st.executeUpdate("UPDATE seller SET BaseSalary = 2090 WHERE departmentId = 1");
 			
 			//fazendo um erro no BD
-			int x = 2;
-			if(x<3) {
-				throw new SQLException("Fake error");
-			}
+			//int x = 2;
+			//if(x<3) {
+			//	throw new SQLException("Fake error");
+			//}
 			
 			int rows2 = st.executeUpdate("UPDATE seller SET BaseSalary = 3500 WHERE departmentId = 2");
 
