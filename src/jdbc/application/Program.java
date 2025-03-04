@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
 
-import jdbc.Db;
+import db.Db;
 
 public class Program {
 
