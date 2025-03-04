@@ -1,15 +1,21 @@
 package jdbc.application;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import jdbc.Db;
 
 public class Program {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
+		
+		//intanciar a data
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
 		//conectar o banco
 		Connection conn = null;
@@ -19,6 +25,9 @@ public class Program {
 		
 		//Guardar o resultado desta query
 		ResultSet rs = null;
+		
+		//inserir dados
+		PreparedStatement pst = null;
 		
 		try {
 			//conectando com o DB
@@ -34,8 +43,31 @@ public class Program {
 			while(rs.next()) {
 				System.out.println(rs.getInt("Id") + " | " + rs.getString("Name") + " | "+ rs.getString("Email")+ " | " + rs.getInt("BaseSalary"));
 			}
-						
+			
+			
+			//preparando a query de inserção
+			pst = conn.prepareStatement(
+					"INSERT INTO Seller "
+					+ "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
+					+ "VALUES "
+					+ "(?, ?, ?, ?, ?)"
+					);
+			
+			//trocando os placeholders"(?)" e inserindo os dados 
+			pst.setString(1, "REI Pele");//Name
+			pst.setString(2, "REIPele@gmail.com");//Email
+			pst.setDate(3, new java.sql.Date(sdf.parse("22/04/1985").getTime()));
+			pst.setDouble(4, 3000.0);
+			pst.setInt(5, 2);
+			
+			//para saber quantas linhas foram alteradas no DB
+			int rowsAffected = pst.executeUpdate();
+		
+			System.out.println("\nFeito! linhas alteradas: "+ rowsAffected);
+			
 		}catch(SQLException e) {
+			e.printStackTrace();
+		}catch(ParseException e) {
 			e.printStackTrace();
 		}
 		
@@ -44,6 +76,7 @@ public class Program {
 		 */
 		finally {
 			Db.closeStatement(st);
+			Db.closeStatement(pst);
 			Db.closeResultSet(rs);
 			Db.closeConnection();
 		}
