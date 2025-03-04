@@ -4,10 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
 
 import db.Db;
+import db.DbIntegrityException;
 
 public class Program {
 
@@ -19,29 +19,20 @@ public class Program {
 		try {
 			
 			conn = Db.getConnection();
-			// EXAMPLE 2:
-						st = conn.prepareStatement(
-								"insert into department (Name) values ('D1'),('D2')", 
-								Statement.RETURN_GENERATED_KEYS);
+			
+			st = conn.prepareStatement(
+					"DELETE FROM department "
+					+ "WHERE "
+					+ "Id = ?");
 
-						int rowsAffected = st.executeUpdate();
-
-						if (rowsAffected > 0) {
-							rs = st.getGeneratedKeys();
-							while (rs.next()) {
-								int id = rs.getInt(1);
-								System.out.println("Done! Id: " + id);
-							}
-						}
-						else {
-							System.out.println("No rows affected!");
-						}
-		
-		
-		
-		
-		}catch(SQLException e) {
-			e.printStackTrace();
+			st.setDouble(1, 1);
+			
+			int rowsAffected = st.executeUpdate();
+			
+			System.out.println("Feito! linhas alteradas: " + rowsAffected);
+		}
+		catch(SQLException e) {
+			throw new DbIntegrityException(e.getMessage());
 		}
 		finally {
 			Db.closeStatement(st);
