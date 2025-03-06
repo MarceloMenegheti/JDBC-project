@@ -106,7 +106,10 @@ public class SellerDaoJDBC implements SellerDao{
 			//pega o id
 			st.setInt(1,id);
 			
-			st.executeUpdate();
+			int rows = st.executeUpdate();
+			if(rows == 0) {
+				throw new DbException("Vendedor nao encontrado! ");
+			}
 			
 		}catch(SQLException  e) {
 			throw new DbException(e.getMessage());

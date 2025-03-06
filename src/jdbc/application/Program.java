@@ -44,8 +44,8 @@ public class Program {
 		System.out.println("\n=== TEST 5: seller Update ====");
 		//carregar o dado do vendedor para atualizar
 		seller = sellerDao.findById(11);//antes "leo"
-		seller.setName("Rodolfo");//agora rodolfo
-		sellerDao.update(seller);
+		//seller.setName("Rodolfo");//agora rodolfo
+		//sellerDao.update(seller);
 		System.out.println("atualização completa! ");
 		
 		System.out.println("\n=== TEST 6: seller Delete ====");
