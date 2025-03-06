@@ -1,10 +1,12 @@
 package jdbc.application;
 
+import java.util.List;
 import java.util.Scanner;
 
 import model.dao.DaoFactory;
 import model.dao.DepartmentDao;
 import model.entities.Department;
+import model.entities.Seller;
 
 public class Program2 {
 
@@ -19,7 +21,10 @@ public class Program2 {
 		System.out.println(dep);
 		
 		System.out.println("\n=== TEST 2: seller findByDepartment ====");
-
+		List<Department> list = departmentDao.findAll();
+		for(Department obj : list) {
+			System.out.println(obj);
+		}
 		
 		System.out.println("\n=== TEST 3: seller findAll ====");
 
