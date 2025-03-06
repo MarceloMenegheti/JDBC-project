@@ -62,20 +62,11 @@ public class SellerDaoJDBC implements SellerDao{
 				
 				//navegando nos dados para instanciar os objs.
 				//comecando com o obj agregado Department
-				Department dep = new Department();
-				dep.setId(rs.getInt("DepartmentId"));
-				dep.setName(rs.getString("DepName"));
+				Department dep = instantieteDepartment(rs);
 				
 				//agora criar o obj Seller e apontar para o Department
-				Seller obj = new Seller();
-				obj.setId(rs.getInt("Id"));
-				obj.setName(rs.getString("Name"));
-				obj.setEmail(rs.getString("Email"));
-				obj.setBaseSalary(rs.getDouble("BaseSalary"));
-				obj.setBirthDate(rs.getDate("BirthDate"));
+				Seller obj = instantieteSeller(rs,dep);
 				
-				//apontando para o obj Department dep
-				obj.setDepartment(dep);
 				return obj;
 			}
 			return null;
@@ -91,6 +82,26 @@ public class SellerDaoJDBC implements SellerDao{
 			//como findAll(), insert(), update() e etc....
 			
 		}
+	}
+
+	private Department instantieteDepartment(ResultSet rs) throws SQLException {
+		Department dep = new Department();
+		dep.setId(rs.getInt("DepartmentId"));
+		dep.setName(rs.getString("DepName"));
+		return dep;
+	}
+
+	private Seller instantieteSeller(ResultSet rs, Department dep) throws SQLException {
+		Seller obj = new Seller();
+		obj.setId(rs.getInt("Id"));
+		obj.setName(rs.getString("Name"));
+		obj.setEmail(rs.getString("Email"));
+		obj.setBaseSalary(rs.getDouble("BaseSalary"));
+		obj.setBirthDate(rs.getDate("BirthDate"));
+		
+		//apontando para o obj Department dep
+		obj.setDepartment(dep);
+		return obj;
 	}
 
 	@Override
