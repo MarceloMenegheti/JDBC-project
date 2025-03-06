@@ -109,8 +109,55 @@ public class SellerDaoJDBC implements SellerDao{
 
 	@Override
 	public List<Seller> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null; 
+		try {
+			st = conn.prepareStatement(
+					"SELECT seller.*, department.Name as DepName "
+					+ "FROM seller INNER JOIN department "
+					+ "on seller.DepartmentId = department.Id "
+					+ "ORDER BY Name");
+			
+			rs = st.executeQuery();
+			
+			List<Seller> list = new ArrayList<>();
+			
+			/*Criando um map vazio para guardar qualquer department que for instanciado
+			 * Agora para cada vez que passar pelo while()
+			 * Vou verificar se o department ja existe.
+			 * */
+			Map<Integer, Department> map = new HashMap<Integer, Department>();
+			
+			while (rs.next()){
+				
+				//verificar se o department ja existe
+				Department dep = map.get(rs.getInt("DepartmentId"));
+				
+				//verfica se o dep é null 
+				if(dep == null) {
+					
+					dep = instantieteDepartment(rs);
+					
+					//qual o department que vou salvar? o que estiver na variavel "dep"
+					map.put(rs.getInt("DepartmentId"), dep);
+				}
+				
+				Seller obj = instantieteSeller(rs,dep);
+				list.add(obj);
+			}
+			return list;
+			
+		}catch(SQLException e){
+			throw new DbException(e.getMessage());
+		}finally {
+			
+			Db.closeStatement(st);
+			Db.closeResultSet(rs);
+			//Db.closeConnection();
+			//não fechei o Conncetion porque posso fazer outras operações 
+			//como findAll(), insert(), update() e etc....
+			
+		}
 	}
 
 	@Override
