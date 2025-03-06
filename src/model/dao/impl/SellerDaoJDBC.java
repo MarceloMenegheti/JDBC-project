@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.Db;
 import db.DbException;
@@ -108,6 +111,74 @@ public class SellerDaoJDBC implements SellerDao{
 	public List<Seller> findAll() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Seller> findByDepartment(Department department) {
+		PreparedStatement st = null;
+		ResultSet rs = null; 
+		try {
+			//fazendo a query
+			st = conn.prepareStatement(
+					"SELECT seller.*, department.Name as DepName "
+					+ "FROM seller INNER JOIN department "
+					+ "on seller.DepartmentId = department.Id "
+					+ "WHERE DepartmentId = ? "
+					+ "ORDER BY Name");
+			
+			//adicionando o ID parametro no placeholder(?)
+			st.setInt(1, department.getId());
+			
+			//salvando o result
+			rs = st.executeQuery();
+			
+			//retornando uma lista
+			List<Seller> list = new ArrayList<>();
+			
+			
+			/*Criando um map vazio para guardar qualquer department que for instanciado
+			 * 
+			 * Agora para cada vez que passar pelo while()
+			 * Vou verificar se o department ja existe.
+			 * */
+			Map<Integer, Department> map = new HashMap<Integer, Department>();
+			
+			while (rs.next()){
+				
+				//verificar se o department ja existe
+				Department dep = map.get(rs.getInt("DepartmentId"));
+				
+				//verfica se o dep é null 
+				if(dep == null) {
+					
+					//se for instanciará um novo
+					dep = instantieteDepartment(rs);
+					
+					//Agora é salvar dentro do map, 
+					//Verifica se o department ja existe = rs.getInt("Department")
+					//qual o department que vou salvar? o que estiver na variavel "dep"
+					map.put(rs.getInt("DepartmentId"), dep);
+				}
+				
+				Seller obj = instantieteSeller(rs,dep);
+				
+				//adicionando a lista 
+				list.add(obj);
+			}
+			//retornando a list
+			return list;
+			
+		}catch(SQLException e){
+			throw new DbException(e.getMessage());
+		}finally {
+			
+			Db.closeStatement(st);
+			Db.closeResultSet(rs);
+			//Db.closeConnection();
+			//não fechei o Conncetion porque posso fazer outras operações 
+			//como findAll(), insert(), update() e etc....
+			
+		}
 	}
 
 }
