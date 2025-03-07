@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import model.dao.DaoFactory;
 import model.dao.DepartmentDao;
+import model.dao.impl.DepartmentDaoJDBC;
 import model.entities.Department;
 import model.entities.Seller;
 
@@ -20,22 +21,21 @@ public class Program2 {
 		Department dep = departmentDao.findById(2);
 		System.out.println(dep);
 		
-		System.out.println("\n=== TEST 2: seller findByDepartment ====");
+		System.out.println("\n=== TEST 2: seller findAll ====");
 		List<Department> list = departmentDao.findAll();
 		for(Department obj : list) {
 			System.out.println(obj);
 		}
 		
-		System.out.println("\n=== TEST 3: seller findAll ====");
+		System.out.println("\n=== TEST 3: seller Insert ====");
+		Department dep2 = new Department(null, "Pagode");
+		departmentDao.insert(dep2);
+		System.out.println("Inserido Id = " + dep2.getId());
+		
+		System.out.println("\n=== TEST 4: seller Update ====");
 
 		
-		System.out.println("\n=== TEST 4: seller Insert ====");
-
-		
-		System.out.println("\n=== TEST 5: seller Update ====");
-
-		
-		System.out.println("\n=== TEST 6: seller Delete ====");
+		System.out.println("\n=== TEST 5: seller Delete ====");
 
 		
 		sc.close();
