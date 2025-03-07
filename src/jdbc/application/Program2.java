@@ -30,9 +30,14 @@ public class Program2 {
 		System.out.println("\n=== TEST 3: seller Insert ====");
 		Department dep2 = new Department(null, "Pagode");
 		departmentDao.insert(dep2);
-		System.out.println("Inserido Id = " + dep2.getId());
+		System.out.println("Insert Id = " + dep2.getId());
 		
 		System.out.println("\n=== TEST 4: seller Update ====");
+		Department dep3 = departmentDao.findById(13);
+		dep3.setName("party");
+		departmentDao.update(dep3);
+		System.out.println("Update feito com sucesso!");
+		
 
 		
 		System.out.println("\n=== TEST 5: seller Delete ====");
