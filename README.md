@@ -12,6 +12,11 @@ gerenciar transações e aplicar boas práticas no uso do JDBC, proporcionando u
 - Gerenciar transações e lidar com exceções.
 - Explorar boas práticas e padrões de design ao usar JDBC.
 
+## 📐 Modelo Relacional
+Abaixo está o diagrama de relacionamento entre as entidades Autor, Postagem e Comentario no sistema:
+
+<img src="https://github.com/user-attachments/assets/771547fa-6776-4912-827d-7fd8bafaa5dc" alt="Modelo Relacional" width="600"/>
+
 ## ✍️ Principais componentes do JDBC:
 
 | Componente               | Descrição                                  |
@@ -21,7 +26,6 @@ gerenciar transações e aplicar boas práticas no uso do JDBC, proporcionando u
 | **Statement/PreparedStatement** | Executa comandos SQL                  |
 | **ResultSet**           | Armazena os resultados de consultas        |
 | **SQLException**       | Trata erros relacionados ao banco          |
-
 
 ## 📋 Pré-requisitos
 **Java**: Linguagem principal do projeto
